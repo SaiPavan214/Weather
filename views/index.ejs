@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <h1>Weather</h1>
+            </div>
+        </nav>
+        <div id="main">
+            <% if (typeof error !=='undefined' && error) { %>
+                <p class="text-danger">Error fetching the details: <%= error %>
+                </p>
+                <% } else { %>
+                    <div class="card" style="width: 18rem;">
+                        <ul class="">
+                            <li class="">Latitude: <%= latitude %>
+                            </li>
+                            <li class="">Longitude: <%= longitude %>
+                            </li>
+                            <li class="">Weather: <%= weather %>
+                            </li>
+                            <% if (icon) { %>
+                                <li class="">
+                                    <img src="<%= icon %>" alt="Weather icon" />
+                                </li>
+                                <% } %>
+                        </ul>
+                    </div>
+                    <% } %>
+        </div>
+    </div>
+
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    // Redirect to server with location data
+                    window.location.href = `/?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}`;
+                },
+                function (error) {
+                    console.error("Error getting location: " + error.message);
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
+    </script>
+</body>
+
+</html>
